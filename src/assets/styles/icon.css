@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?878hkf');
-  src:  url('fonts/icomoon.eot?878hkf#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?878hkf') format('truetype'),
-    url('fonts/icomoon.woff?878hkf') format('woff'),
-    url('fonts/icomoon.svg?878hkf#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?483ts5');
+  src:  url('fonts/icomoon.eot?483ts5#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?483ts5') format('truetype'),
+    url('fonts/icomoon.woff?483ts5') format('woff'),
+    url('fonts/icomoon.svg?483ts5#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -54,10 +54,10 @@
 .icon-clock:before {
   content: "\e909";
 }
-.icon-close:before {
+.icon-close-circle-fill:before {
   content: "\e90a";
 }
-.icon-close-circle-fill:before {
+.icon-close:before {
   content: "\e90b";
 }
 .icon-cn:before {
@@ -69,10 +69,10 @@
 .icon-down2:before {
   content: "\e90e";
 }
-.icon-download:before {
+.icon-download-remove:before {
   content: "\e90f";
 }
-.icon-download-remove:before {
+.icon-download:before {
   content: "\e910";
 }
 .icon-en:before {
@@ -108,10 +108,10 @@
 .icon-play_pause:before {
   content: "\e91b";
 }
-.icon-private:before {
+.icon-private-see:before {
   content: "\e91c";
 }
-.icon-private-see:before {
+.icon-private:before {
   content: "\e91d";
 }
 .icon-progress:before {
