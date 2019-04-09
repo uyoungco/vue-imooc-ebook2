@@ -18,19 +18,22 @@
     </transition>
     <ebook-setting-font></ebook-setting-font>
     <ebook-srttging-font-popup></ebook-srttging-font-popup>
+    <ebook-serring-theme></ebook-serring-theme>
   </div>
 </template>
 
 <script>
     import EbookSettingFont from './EbookSettingFont'
     import EbookSrttgingFontPopup from './EbookSettingFontPopup'
+    import EbookSerringTheme from './EbookSettingTheme'
     import { ebookMixin } from '../../utils/mixin'
 
     export default {
       mixins: [ebookMixin],
       components: {
         EbookSettingFont,
-        EbookSrttgingFontPopup
+        EbookSrttgingFontPopup,
+        EbookSerringTheme
       },
       name: 'EbookMenu.vue',
       methods: {

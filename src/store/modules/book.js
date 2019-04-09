@@ -1,6 +1,6 @@
 const book = {
   state: {
-    fileName: '',
+    fileName: '', // "History/2017_Book_InterdisciplinaryPerspectivesO" 书的路径
     menuVisible: false, // 显示或隐藏 阅读时设置
     settingVisible: -1, // -1:不显示,0:字号,1:主题,2:进度,3:目录
     defaultFontSize: 16, // 阅读默认字体大小

@@ -9,6 +9,14 @@
 <script>
   import { ebookMixin } from '../../utils/mixin'
   import Epub from 'epubjs'
+  import {
+    getFontFamily,
+    getFontSize,
+    getTheme,
+    saveFontFamily,
+    saveFontSize,
+    saveTheme
+  } from '../../utils/localStorage'
   global.ePub = Epub
 
   export default {
@@ -44,8 +52,40 @@
         this.setSettingVisible(-1)
         this.setFontFamilyVisible(false)
       },
+      initFontSize() {
+        // 字体大小初始化
+        let fontSize = getFontSize(this.fileName)
+        if (!fontSize) {
+          saveFontSize(this.fileName, this.defaultFontSize)
+        } else {
+          this.rendition.themes.fontSize(fontSize)
+          this.setDefaultFontSize(fontSize)
+        }
+      },
+      initFontFamily() {
+        // 字体初始化
+        let font = getFontFamily(this.fileName)
+        if (!font) {
+          saveFontFamily(this.fileName, this.defaultFontFamily)
+        } else {
+          this.rendition.themes.font(font)
+          this.setDefaultFontFamily(font)
+        }
+      },
+      initTheme() {
+        // 主题初始化
+        let defaultTheme = getTheme(this.fileName)
+        if (!defaultTheme) {
+          defaultTheme = this.themeList[0].name
+          saveTheme(this.fileName, defaultTheme)
+        }
+        this.themeList.forEach(theme => {
+          this.rendition.themes.register(theme.name, theme.style)
+        })
+        this.rendition.themes.select(defaultTheme)
+      },
       initEpub() {
-        const url = 'http://localhost:8081/epub/' + this.fileName + '.epub'
+        const url = 'http://192.168.1.13:8081/epub/' + this.fileName + '.epub'
         this.book = new Epub(url)
         this.setCurrentBook(this.book)
         this.rendition = this.book.renderTo('read', {
@@ -53,7 +93,11 @@
           height: innerHeight,
           method: 'default'
         })
-        this.rendition.display()
+        this.rendition.display().then(() => {
+          this.initTheme() // 初始化主题颜色
+          this.initFontSize() // 初始化字体大小
+          this.initFontFamily() // 初始化字体类型
+        })
         this.rendition.on('touchstart', event => {
           this.touchStartX = event.changedTouches[0].clientX
           this.touchStartTime = event.timeStamp

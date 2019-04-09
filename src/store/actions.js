@@ -2,7 +2,7 @@ const actions = {
   setFontFamilyVisible: ({ commit }, visible) => {
     return commit('SET_FONT_FAMILY_VISIBLE', visible)
   },
-  setDefaultFontFamily: ({ commit }, font) => {
+  setDefaultFontFamily: ({ commit }, font) => { // 存储字体
     return commit('SET_DEFAULT_FONT_FAMILY', font)
   },
   setDefaultFontSize: ({ commit }, fontSize) => {
