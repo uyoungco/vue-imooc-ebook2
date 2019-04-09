@@ -19,6 +19,7 @@
     <ebook-setting-font></ebook-setting-font>
     <ebook-srttging-font-popup></ebook-srttging-font-popup>
     <ebook-serring-theme></ebook-serring-theme>
+    <ebook-setting-progress></ebook-setting-progress>
   </div>
 </template>
 
@@ -26,6 +27,7 @@
     import EbookSettingFont from './EbookSettingFont'
     import EbookSrttgingFontPopup from './EbookSettingFontPopup'
     import EbookSerringTheme from './EbookSettingTheme'
+    import EbookSettingProgress from './EbookSettingProgress'
     import { ebookMixin } from '../../utils/mixin'
 
     export default {
@@ -33,7 +35,8 @@
       components: {
         EbookSettingFont,
         EbookSrttgingFontPopup,
-        EbookSerringTheme
+        EbookSerringTheme,
+        EbookSettingProgress
       },
       name: 'EbookMenu.vue',
       methods: {

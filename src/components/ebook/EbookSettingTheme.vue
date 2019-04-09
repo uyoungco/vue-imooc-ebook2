@@ -21,9 +21,8 @@
       setTheme(index) {
         const theme = this.themeList[index]
         this.setDefaultTheme(theme.name).then(() => {
-          console.log(this)
-          debugger
           this.currentBook.rendition.themes.select(this.defaultTheme)
+          this.initGlobalStyle()
         })
         saveTheme(this.fileName, theme.name)
       }

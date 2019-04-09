@@ -77,15 +77,17 @@
         let defaultTheme = getTheme(this.fileName)
         if (!defaultTheme) {
           defaultTheme = this.themeList[0].name
+
           saveTheme(this.fileName, defaultTheme)
         }
+        this.setDefaultTheme(defaultTheme)
         this.themeList.forEach(theme => {
           this.rendition.themes.register(theme.name, theme.style)
         })
         this.rendition.themes.select(defaultTheme)
       },
       initEpub() {
-        const url = 'http://192.168.1.13:8081/epub/' + this.fileName + '.epub'
+        const url = `${process.env.VUE_APP_RES_URL}/epub/${this.fileName}.epub`
         this.book = new Epub(url)
         this.setCurrentBook(this.book)
         this.rendition = this.book.renderTo('read', {
@@ -97,6 +99,7 @@
           this.initTheme() // 初始化主题颜色
           this.initFontSize() // 初始化字体大小
           this.initFontFamily() // 初始化字体类型
+          this.initGlobalStyle() // 初始化全局样式 方法在mixin
         })
         this.rendition.on('touchstart', event => {
           this.touchStartX = event.changedTouches[0].clientX
