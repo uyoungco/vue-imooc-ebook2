@@ -7,9 +7,9 @@ const book = {
     defaultFontFamily: 'Default', // 字体设置
     fontFamilyVisible: false, // 显示或隐藏设置字体
     defaultTheme: 'Default', // 主题设置
-    bookAvailable: false,
+    bookAvailable: false, // 是否已经完成进度计算
     progress: 0,
-    section: 0,
+    section: 0, // 当前章节的位置
     isPaginating: true,
     currentBook: null, // epubjs
     navigation: null,

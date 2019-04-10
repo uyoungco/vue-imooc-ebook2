@@ -3,8 +3,7 @@
     <div class="setting-wrapper" v-show="menuVisible && settingVisible === 2">
       <div class="setting-progress">
         <div class="read-time-wrapper">
-<!--          <span class="read-time-text">{{getReadTimeText()}}</span>-->
-          <span class="read-time-text">111</span>
+          <span class="read-time-text">{{getReadTimeText()}}</span>
           <span class="icon-forward"></span>
         </div>
         <div class="progress-wrapper">
@@ -38,19 +37,66 @@
 
   export default {
     mixins: [ebookMixin],
+    computed: {
+      getSectionName () {
+        if (this.section) {
+          const sectionInfo = this.currentBook.section(this.section)
+          if (sectionInfo && sectionInfo.href) {
+            return this.currentBook.navigation.get(sectionInfo.href).label
+          }
+        }
+      }
+    },
     methods: {
       onProgressChange(progress) {
         // 拖动以后松手的调用方法
+        this.setProgress(progress).then(() => {
+          this.displayProgress()
+          this.updateProgressBg()
+        })
       },
       onProgressInput(progress) {
         // 拖动过程中调用的方法
+        this.setProgress(progress).then(() => {
+          this.updateProgressBg()
+        })
+      },
+      displayProgress() {
+        const cfi = this.currentBook.locations.cfiFromPercentage(this.progress / 100)
+        this.display(cfi)
+        // this.currentBook.rendition.display(cfi).then(() => {
+        //   this.refreshLocation()
+        // })
+      }, // 当前进度所展示的页面
+      updateProgressBg() {
+        this.$refs.progress.style.backgroundSize = `${this.progress}% 100%`
       },
       prevSection() {
-
+        if (this.section > 0 && this.bookAvailable) {
+          this.setSection(this.section - 1).then(() => {
+           this.displaySection()
+          })
+        }
       },
       nextSection() {
-
+        if (this.section < this.currentBook.spine.length - 1 && this.bookAvailable) {
+          this.setSection(this.section + 1).then(() => {
+            this.displaySection()
+          })
+        }
+      },
+      displaySection() {
+        const sectionInfo = this.currentBook.section(this.section)
+        if (sectionInfo && sectionInfo.href) {
+          this.display(sectionInfo.href)
+          // this.currentBook.rendition.display(sectionInfo.href).then(() => {
+          //   this.refreshLocation()
+          // })
+        }
       }
+    },
+    updated() {
+      this.updateProgressBg()
     }
   }
 </script>
@@ -94,8 +140,6 @@
           -webkit-appearance: none;
           height: px2rem(2);
           margin: 0 px2rem(10);
-          background: -webkit-linear-gradient(#999, #999) no-repeat, #ddd;
-          background-size: 0 100%!important;
           &:focus {
             outline: none;
           }
@@ -121,7 +165,7 @@
         box-sizing: border-box;
         @include center;
         .progress-section-text {
-          //@include ellipsis;
+          @include ellipsis;
         }
       }
     }
