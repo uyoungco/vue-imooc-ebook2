@@ -10,8 +10,10 @@
   import EbookReader from '../../components/ebook/EbookReader'
   import EbookTitle from '../../components/ebook/EbookTitle'
   import EbookMenu from '../../components/ebook/EbookMenu'
+  import { ebookMixin } from '../../utils/mixin'
   import { getReadTime, saveReadTime } from '../../utils/localStorage'
   export default {
+    mixins: [ebookMixin],
     components: {
       EbookReader,
       EbookTitle,
