@@ -1,7 +1,6 @@
 <template>
   <div class="ebook-reader">
     <div id="read">
-
     </div>
   </div>
 </template>
@@ -9,6 +8,7 @@
 <script>
   import { ebookMixin } from '../../utils/mixin'
   import Epub from 'epubjs'
+  import { flatten } from '../../utils/book'
   import {
     getFontFamily,
     getFontSize,
@@ -51,11 +51,6 @@
           this.setFontFamilyVisible(false)
         }
         this.setMenuVisible(!this.menuVisible)
-      },
-      hideTitleAndMenu() {
-        this.setMenuVisible(false)
-        this.setSettingVisible(-1)
-        this.setFontFamilyVisible(false)
       },
       initFontSize() {
         // 字体大小初始化
@@ -129,16 +124,30 @@
           event.stopPropagation()
         })
       },
+      parseBook() {
+        // 初始化封面图 作者信息
+        this.book.loaded.cover.then(cover => {
+          this.book.archive.createUrl(cover).then(url => {
+            this.setCover(url)
+          })
+        })
+        this.book.loaded.metadata.then(metadata => {
+          this.setMetadata(metadata)
+        })
+        this.book.loaded.navigation.then(nav => {
+          // const navItem = flatten(nav.toc)
+        })
+      },
       initEpub() {
         const url = `${process.env.VUE_APP_RES_URL}/epub/${this.fileName}.epub`
         this.book = new Epub(url)
         this.setCurrentBook(this.book)
         this.initRendition()
         this.initGesture()
+        this.parseBook()
         this.book.ready.then(() => {
           return this.book.locations.generate(750 * (window.innerWidth / 375) * (getFontSize(this.fileName) / 16))
         }).then(locations => {
-          // console.log(locations)
           this.setBookAvailable(true)
           this.refreshLocation()
         })
