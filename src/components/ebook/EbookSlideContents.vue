@@ -35,7 +35,7 @@
           </div>
           <div class="slide-contents-book-time">{{getReadTimeText()}}</div>
         </div>
-      </div v-s>
+      </div>
       <scroll
         class="slide-contents-list"
         :top="156"
