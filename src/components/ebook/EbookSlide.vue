@@ -32,6 +32,7 @@
 <script>
   import { ebookMixin } from '../../utils/mixin'
   import EbookSlideContents from './EbookSlideContents'
+  import EbookSildeBookmark from './EbookSildeBookmark'
   import EbookLoading from './EbookLoading'
 
   export default {
@@ -44,7 +45,7 @@
       return {
         currenTab: 1,
         content: EbookSlideContents,
-        bookmark: null
+        bookmark: EbookSildeBookmark
       }
     },
     methods: {
