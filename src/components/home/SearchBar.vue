@@ -1,16 +1,17 @@
 <template>
+  <div>
     <div class="search-bar" :class="{'hide-title': !titleVisible, 'hide-shadow': !shadowVisible}">
       <transition name="title-move">
-      <div class="search-bar-title-wrapper" v-show="titleVisible">
-        <div class="title-text-wrapper">
-          <span class="icon-text title">{{$t('home.title')}}</span>
+        <div class="search-bar-title-wrapper" v-show="titleVisible">
+          <div class="title-text-wrapper">
+            <span class="icon-text title">{{$t('home.title')}}</span>
+          </div>
+          <div class="title-icon-shake-wrapper">
+            <span class="icon-shake icon"></span>
+          </div>
         </div>
-        <div class="title-icon-shake-wrapper">
-          <span class="icon-shake icon"></span>
-        </div>
-      </div>
       </transition>
-      <div class="title-icon-back-wrapper" :class="{'hide-title': !titleVisible}">
+      <div class="title-icon-back-wrapper" @click="back" :class="{'hide-title': !titleVisible}">
         <span class="icon-back icon"></span>
       </div>
       <div class="search-bar-input-wrapper" :class="{'hide-title': !titleVisible}">
@@ -22,23 +23,29 @@
             type="text"
             :placeholder="$t('home.hint')"
             v-model="searchText"
+            @click="showHotSearch"
           >
         </div>
       </div>
     </div>
+    <hot-search-list v-show="hotSearchVisible" ref="hotSearch"></hot-search-list>
+  </div>
 </template>
 
 <script>
   import { storehomeMixin } from '../../utils/mixin'
+  import HotSearchList from './HotSearchList'
 
   export default {
     name: 'SearchBar',
     mixins: [storehomeMixin],
+    components: { HotSearchList },
     data() {
       return {
         searchText: '',
         titleVisible: true,
-        shadowVisible: false
+        shadowVisible: false,
+        hotSearchVisible: false
       }
     },
     watch: {
@@ -50,9 +57,42 @@
           this.showTitle()
           this.hideShadow()
         }
+      },
+      hotSearchOffsetY(offsetY) {
+        if (offsetY > 0) {
+          this.showShadow()
+        } else {
+          this.hideShadow()
+        }
       }
     },
     methods: {
+      back() {
+        if (this.offsetY > 0) {
+          this.showShadow()
+        } else {
+          this.hideShadow()
+        }
+        this.hideHotSearch()
+      },
+      showHotSearch() {
+        this.hideTitle()
+        this.hideShadow()
+        this.hotSearchVisible = true
+        this.$nextTick(() => {
+          this.$refs.hotSearch.reset()
+        })
+      },
+      hideHotSearch() {
+        this.hotSearchVisible = false
+        if (this.offsetY > 0) {
+          this.hideTitle()
+          this.showShadow()
+        } else {
+          this.showTitle()
+          this.hideShadow()
+        }
+      },
       hideTitle() {
         this.titleVisible = false
       },
@@ -106,6 +146,7 @@
       position: absolute;
       left: px2rem(15);
       top: 0;
+      z-index: 200;
       height: px2rem(42);
       @include center;
       transition: height .2s linear;

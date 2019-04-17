@@ -35,6 +35,17 @@ $ratio: 375 / 10;
   text-overflow: ellipsis;
   word-break: keep-all;
 }
+@mixin columnLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+@mixin nowrap {
+  white-space: nowrap; // 不换行
+  text-overflow: ellipsis; // 超出部分用省略号表示
+  overflow: hidden;
+}
 
 .icon {
   color: #666;
