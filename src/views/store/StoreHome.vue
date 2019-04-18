@@ -34,6 +34,7 @@
   import Scroll from '../../components/common/Scroll'
   import { storehomeMixin } from '../../utils/mixin'
   import FlapCard from '../../components/home/FlapCard'
+  import { home } from '../../api/store'
 
   export default {
     name: 'StoreHome',
@@ -58,6 +59,11 @@
         }
         this.$refs.scroll.refresh()
       }
+    },
+    mounted() {
+      home().then(res => {
+        console.log(res)
+      })
     }
   }
 </script>
