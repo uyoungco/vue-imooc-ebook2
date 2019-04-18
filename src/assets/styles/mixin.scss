@@ -46,6 +46,14 @@ $ratio: 375 / 10;
   text-overflow: ellipsis; // 超出部分用省略号表示
   overflow: hidden;
 }
+@mixin absCenter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+}
 
 .icon {
   color: #666;
