@@ -32,6 +32,9 @@ import { flapCardList } from '../../utils/store'
 export default {
   name: 'FlapCard',
   mixins: [storehomeMixin],
+  props: {
+    data: Object
+  },
   data() {
     return {
       flapCardList,
@@ -174,6 +177,9 @@ export default {
     for (let i = 0; i < 18; i++) {
       this.pointList.push(`point${i}`)
     }
+  },
+  mounted() {
+    console.log(this.data)
   }
 }
 </script>
