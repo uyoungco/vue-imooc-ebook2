@@ -129,7 +129,7 @@ export const ebookMixin = {
   }
 }
 
-export const storehomeMixin = {
+export const storeHomeMixin = {
   computed: {
     ...mapGetters([
       'offsetY',
@@ -142,6 +142,9 @@ export const storehomeMixin = {
       'setOffsetY',
       'setHotSearchOffsetY',
       'setFlapCardVisible'
-    ])
+    ]),
+    showBookDetail(book) {
+      console.log('showBookDetail')
+    }
   }
 }

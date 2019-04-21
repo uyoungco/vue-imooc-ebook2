@@ -14,10 +14,10 @@
 <script>
   import Scroll from '../common/Scroll'
   import HotSearch from './HotSearch'
-  import { storehomeMixin } from '../../utils/mixin'
+  import { storeHomeMixin } from '../../utils/mixin'
 
   export default {
-    mixins: [storehomeMixin],
+    mixins: [storeHomeMixin],
     components: {
       Scroll,
       HotSearch

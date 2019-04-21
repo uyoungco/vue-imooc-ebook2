@@ -33,12 +33,12 @@
 </template>
 
 <script>
-  import { storehomeMixin } from '../../utils/mixin'
+  import { storeHomeMixin } from '../../utils/mixin'
   import HotSearchList from './HotSearchList'
 
   export default {
     name: 'SearchBar',
-    mixins: [storehomeMixin],
+    mixins: [storeHomeMixin],
     components: { HotSearchList },
     data() {
       return {

@@ -14,9 +14,20 @@ $ratio: 375 / 10;
   justify-content: flex-start;
   align-items: center;
 }
+@mixin top {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
 @mixin right {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+}
+@mixin columnTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -40,6 +51,12 @@ $ratio: 375 / 10;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+}
+@mixin columnCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 @mixin nowrap {
   white-space: nowrap; // 不换行
