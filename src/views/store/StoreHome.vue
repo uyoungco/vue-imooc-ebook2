@@ -68,7 +68,6 @@
     mounted() {
       home().then(response => {
         const data = response.data
-        console.log(data)
         const randomIndex = Math.floor(Math.random() * data.random.length)
         this.random = data.random[randomIndex]
         this.banner = data.banner
