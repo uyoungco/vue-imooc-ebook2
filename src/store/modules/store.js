@@ -4,7 +4,7 @@ const store = {
     flapCardVisible: false,
     isEditMode: false, // 是否进入编辑模式
     shelfList: [], // 书架的图书列表
-    shelfSelected: [1], // 书架图书选中的列表
+    shelfSelected: [], // 书架图书选中的列表
     shelfTitleVisible: true // 书架标题的显示状态
   },
   mutations: {
