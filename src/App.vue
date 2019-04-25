@@ -1,12 +1,28 @@
 <template>
   <div id="app">
 
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  export default {}
+  export default {
+    // watch: {
+    //   $route() {
+    //     this.directRightUrl()
+    //   }
+    // },
+    // methods: {
+    //   directRightUrl() {
+    //     let { href, protocol, host, pathname, search, hash } = window.location
+    //     search = search || '?'
+    //     let newHref = `${protocol}//${host}${pathname}${search}${hash}`
+    //     if (newHref !== href) {
+    //       window.location.replace(newHref)
+    //     }
+    //   }
+    // }
+  }
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.querySelector('html')
     let fontSize = window.innerWidth / 10
