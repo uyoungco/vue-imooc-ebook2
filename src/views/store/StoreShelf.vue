@@ -1,8 +1,13 @@
 <template>
   <div class="store-shelf">
     <shelf-title></shelf-title>
-    <scroll class="store-shelf-scroll-wrapper" :top="0">
+    <scroll
+      class="store-shelf-scroll-wrapper"
+      :top="0"
+      @onScroll="onScroll"
+    >
       <shelf-search></shelf-search>
+      <shelf-list></shelf-list>
     </scroll>
   </div>
 </template>
@@ -12,14 +17,21 @@
   import { storeShelfMixin } from '../../utils/mixin'
   import Scroll from '../../components/common/Scroll'
   import ShelfSearch from '../../components/shelf/shelfSearch'
+  import ShelfList from '../../components/shelf/ShelfList'
 
   export default {
     name: 'StoreShelf',
     mixins: [storeShelfMixin],
     components: {
+      ShelfList,
       ShelfSearch,
       Scroll,
       ShelfTitle
+    },
+    methods: {
+      onScroll(offsetY) {
+        this.setOffsetY(offsetY)
+      }
     }
   }
 </script>

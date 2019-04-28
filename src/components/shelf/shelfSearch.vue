@@ -1,5 +1,5 @@
 <template>
-  <div class="shelf-search-wrapper">
+  <div class="shelf-search-wrapper" :class="{'search-top': ifInputClicked, 'hide-shadow': ifHideShadow}">
     <div class="shelf-search" :class="{'search-top': ifInputClicked}">
       <div class="search-wrapper">
         <div class="icon-search-wrapper">
@@ -30,6 +30,16 @@
         <span class="cancel-text">{{$t('shelf.cancel')}}</span>
       </div>
     </div>
+    <transition name="hot-search-move">
+      <div class="shelf-search-tab-wrapper" v-if="ifInputClicked">
+        <div class="shelf-search-tab-item" @click="onTabClick(item.id)" v-for="item in tabs" :key="item.id">
+        <span
+          class="shelf-search-tab-text"
+          :class="{'is-selected': item.id === selectedTab}"
+        >{{item.text}}</span>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -43,15 +53,41 @@
     data() {
       return {
         ifInputClicked: false,
-        searchText: ''
+        searchText: '',
+        selectedTab: 1,
+        ifHideShadow: true
       }
     },
     computed: {
       lang() {
         return this.$i18n.locale
+      },
+      tabs() {
+        return [
+          {
+            id: 1,
+            text: this.$t('shelf.default')
+          },
+          {
+            id: 2,
+            text: this.$t('shelf.progress')
+          },
+          {
+            id: 3,
+            text: this.$t('shelf.purchase')
+          }
+        ]
+      }
+    },
+    watch: {
+      offsetY(offsetY) {
+        this.ifHideShadow = !(offsetY > 0 && this.ifInputClicked)
       }
     },
     methods: {
+      onTabClick(id) {
+        this.selectedTab = id
+      },
       clearSearchText() {
         this.searchText = ''
       },
@@ -84,6 +120,15 @@
     height: px2rem(94);
     font-size: px2rem(16);
     background: white;
+    box-shadow: 0 px2rem(2) px2rem(2) 0 rgba(0, 0, 0, .1);
+    &.hide-shadow {
+      box-shadow: none;
+    }
+    &.search-top {
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
     .shelf-search {
       position: absolute;
       top: px2rem(42);
@@ -151,6 +196,27 @@
         .cancel-text {
           font-size: px2rem(14);
           color: $color-blue;
+        }
+      }
+    }
+    .shelf-search-tab-wrapper {
+      position: absolute;
+      top: px2rem(52);
+      left: 0;
+      z-index: 105 ;
+      display: flex;
+      height: px2rem(42);
+      width: 100%;
+      .shelf-search-tab-item {
+        flex: 1;
+        @include center();
+        .shelf-search-tab-text {
+          z-index: 106;
+          font-size: px2rem(12);
+          color: #999;
+          &.is-selected {
+            color: $color-blue;
+          }
         }
       }
     }
