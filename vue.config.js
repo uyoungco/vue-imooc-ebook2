@@ -10,9 +10,10 @@ const mockBookList = require('./src/mock/bookCategoryList')
 const mockBookFlatList = require('./src/mock/bookFlatList')
 
 module.exports = {
-  baseUrl: process.env.NODE_ENV === 'production'
-    ? './'
-    : '/',
+  /* 部署应用包的基本URL */
+  /* baseUrl 从 Vue CLI 3.3 起已弃用 ，请使用publicPath */
+  //  baseUrl: process.env.NODE_ENV === "production" ? "./" : "./",
+  publicPath: process.env.NODE_ENV === 'production' ? './' : './',
   devServer: {
     before(app) {
       mock(app, '/book/home', mockBookHomeData)

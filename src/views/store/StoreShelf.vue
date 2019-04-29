@@ -18,6 +18,7 @@
   import Scroll from '../../components/common/Scroll'
   import ShelfSearch from '../../components/shelf/shelfSearch'
   import ShelfList from '../../components/shelf/ShelfList'
+  import { shelf } from '../../api/store'
 
   export default {
     name: 'StoreShelf',
@@ -31,7 +32,18 @@
     methods: {
       onScroll(offsetY) {
         this.setOffsetY(offsetY)
+      },
+      getShelfList() {
+        shelf().then(response => {
+          if (response.data.bookList) {
+            debugger
+            this.setShelfList(response.data.bookList)
+          }
+        })
       }
+    },
+    mounted() {
+      this.getShelfList()
     }
   }
 </script>
