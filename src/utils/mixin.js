@@ -172,6 +172,15 @@ export const storeShelfMixin = {
       'setShelfSelected',
       'setShelfTitleVisible',
       'setOffsetY'
-    ])
+    ]),
+    showBookDetail(book) {
+      this.$router.push({
+        path: '/store/detail',
+        query: {
+          fileName: book.fileName,
+          category: book.categoryText
+        }
+      })
+    }
   }
 }

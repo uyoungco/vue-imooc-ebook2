@@ -1,3 +1,22 @@
+export const gotoStoreHome = vue => {
+  vue.$router.push({
+    path: '/store/home'
+  })
+}
+
+export const appendAddToShelf = list => {
+  list.push({
+    id: -1,
+    type: 3
+  })
+  return list
+}
+
+export const removeAddFromShelf = list => {
+  list.filter(item => item.type !== 3)
+  return list
+}
+
 export const flapCardList = [
   {
     r: 255,
