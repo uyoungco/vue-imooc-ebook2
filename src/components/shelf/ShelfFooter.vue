@@ -1,24 +1,29 @@
 <template>
-  <div class="shelf-footer" v-show="isEditMode">
-    <div
-      class="shelf-footer-tab-wrapper"
-      v-for="item in tabs"
-      :key="item.index"
-      @click="onTabClick(item)"
-    >
-      <div class="shelf-footer-tab" :class="{'is-selected': isSelected}">
-        <div class="icon-private tab-icon" v-if="item.index === 1"></div>
-        <div class="icon-download tab-icon" v-if="item.index === 2"></div>
-        <div class="icon-move tab-icon" v-if="item.index === 3"></div>
-        <div class="icon-shelf tab-icon" v-if="item.index === 4"></div>
-        <div class="tab-text">{{item.label}}</div>
+  <transition name="slide-up">
+    <div class="shelf-footer" v-show="isEditMode">
+      <div
+        class="shelf-footer-tab-wrapper"
+        v-for="item in tabs"
+        :key="item.index"
+        @click="onTabClick(item)"
+      >
+        <div class="shelf-footer-tab" :class="{'is-selected': isSelected}">
+          <div class="icon-private tab-icon" v-if="item.index === 1 && !isPrivate"></div>
+          <div class="icon-private-see tab-icon" v-if="item.index === 1 && isPrivate"></div>
+          <div class="icon-download-remove tab-icon" v-if="item.index === 2 && isDownload"></div>
+          <div class="icon-download tab-icon" v-if="item.index === 2 && !isDownload"></div>
+          <div class="icon-move tab-icon" v-if="item.index === 3"></div>
+          <div class="icon-shelf tab-icon" v-if="item.index === 4"></div>
+          <div class="tab-text">{{label(item)}}</div>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
   import { storeShelfMixin } from '../../utils/mixin'
+  import { saveBookShelf } from '../../utils/localStorage'
 
   export default {
     name: 'ShelfFooter',
@@ -48,13 +53,142 @@
             index: 4
           }
         ]
+      },
+      isPrivate() {
+        if (!this.isSelected) {
+          return false
+        } else {
+          return this.shelfSelected.every(item => item.private)
+        }
+      },
+      isDownload() {
+        if (!this.isSelected) {
+          return false
+        } else {
+          return this.shelfSelected.every(item => item.cache)
+        }
+      }
+    },
+    data() {
+      return {
+        popupMenu: null
       }
     },
     methods: {
-      onTabClick(item) {
-        this.toast({
-          text: 'imcc'
+      downloadBook() {},
+      hidePopup() {
+        this.popupMenu.hide()
+      },
+      onComplete() {
+        this.hidePopup()
+        this.setIsEditMode(false)
+        saveBookShelf(this.shelfList)
+      },
+      setPrivate() {
+        let isPrivate
+        if (this.isPrivate) {
+          isPrivate = false
+        } else {
+          isPrivate = true
+        }
+        this.shelfSelected.forEach(book => {
+          book.private = isPrivate
+        })
+        this.onComplete()
+        if (isPrivate) {
+          this.simpleToast(this.$t('shelf.setPrivateSuccess'))
+        } else {
+          this.simpleToast(this.$t('shelf.closePrivateSuccess'))
+        }
+      },
+      showprivate() {
+        this.popupMenu = this.popup({
+          title: this.isPrivate ? this.$t('shelf.closePrivate') : this.$t('shelf.setPrivateTitle'),
+          btn: [
+            {
+              text: this.isPrivate ? this.$t('shelf.close') : this.$t('shelf.open'),
+              click: () => {
+                this.setPrivate()
+              }
+            },
+            {
+              text: this.$t('shelf.cancel'),
+              click: () => {
+                this.hidePopup()
+              }
+            }
+          ]
         }).show()
+      },
+      setDownload() {
+        let isDownload
+        if (this.isDownload) {
+          isDownload = false
+        } else {
+          isDownload = true
+        }
+        this.shelfSelected.forEach(book => {
+          book.cache = isDownload
+          this.downloadBook(book)
+        })
+        this.onComplete()
+        if (isDownload) {
+          this.simpleToast(this.$t('shelf.setDownloadSuccess'))
+        } else {
+          this.simpleToast(this.$t('shelf.removeDownloadSuccess'))
+        }
+      },
+      showDownload() {
+        this.popupMenu = this.popup({
+          title: this.isDownload ? this.$t('shelf.removeDownloadTitle') : this.$t('shelf.setDownloadTitle'),
+          btn: [
+            {
+              text: this.isDownload ? this.$t('shelf.delete') : this.$t('shelf.open'),
+              click: () => {
+                this.setDownload()
+              }
+            },
+            {
+              text: this.$t('shelf.cancel'),
+              click: () => {
+                this.hidePopup()
+              }
+            }
+          ]
+        }).show()
+      },
+      onTabClick(item) {
+        if (!this.isSelected) {
+          return
+        }
+        switch (item.index) {
+          case 1:
+            this.showprivate()
+            break
+          case 2:
+            this.showDownload()
+            break
+          case 3:
+            break
+          case 4:
+            break
+          default:
+            break
+        }
+
+        // this.toast({
+        //   text: 'imcc'
+        // }).show()
+      },
+      label(item) {
+        switch (item.index) {
+          case 1:
+            return this.isPrivate ? item.label2 : item.label
+          case 2:
+            return this.isDownload ? item.label2 : item.label
+          default:
+            return item.label
+        }
       }
     }
   }

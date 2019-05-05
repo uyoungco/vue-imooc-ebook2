@@ -127,3 +127,11 @@ export function getCover(fileName) {
 export function saveCover(fileName, cover) {
   setBookObject(fileName, 'cover', cover)
 }
+
+export function saveBookShelf(shelf) {
+  return setLocalStorage('shelf', shelf)
+}
+
+export function getBookShelf() {
+  return getLocalStorage('shelf')
+}
