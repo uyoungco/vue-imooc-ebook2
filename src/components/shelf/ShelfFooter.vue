@@ -14,7 +14,7 @@
           <div class="icon-download tab-icon" v-if="item.index === 2 && !isDownload"></div>
           <div class="icon-move tab-icon" v-if="item.index === 3"></div>
           <div class="icon-shelf tab-icon" v-if="item.index === 4"></div>
-          <div class="tab-text">{{label(item)}}</div>
+          <div class="tab-text" :class="{'remove-text': item.index === 4}">{{label(item)}}</div>
         </div>
       </div>
     </div>
@@ -75,7 +75,17 @@
       }
     },
     methods: {
-      downloadBook() {},
+      downloadSelectedBook() {
+        for (let i = 0; i < this.shelfSelected.length; i++) {
+          this.downloadBook(this.shelfSelected[i])
+        }
+      },
+      downloadBook(book) {
+        console.log(book)
+        return new Promise((resolve, reject) => {
+          // download(book, () => {})
+        })
+      },
       hidePopup() {
         this.popupMenu.hide()
       },
@@ -83,6 +93,13 @@
         this.hidePopup()
         this.setIsEditMode(false)
         saveBookShelf(this.shelfList)
+      },
+      removeSelected() {
+        this.shelfSelected.forEach(selected => {
+          this.setShelfList(this.shelfList.filter(book => book !== selected))
+        })
+        this.setShelfSelected([])
+        this.onComplete()
       },
       setPrivate() {
         let isPrivate
@@ -121,22 +138,23 @@
         }).show()
       },
       setDownload() {
-        let isDownload
-        if (this.isDownload) {
-          isDownload = false
-        } else {
-          isDownload = true
-        }
-        this.shelfSelected.forEach(book => {
-          book.cache = isDownload
-          this.downloadBook(book)
-        })
+        // let isDownload
+        // if (this.isDownload) {
+        //   isDownload = false
+        // } else {
+        //   isDownload = true
+        // }
+        // this.shelfSelected.forEach(book => {
+        //   book.cache = isDownload
+        //   this.downloadBook(book)
+        // })
+        this.downloadSelectedBook()
         this.onComplete()
-        if (isDownload) {
-          this.simpleToast(this.$t('shelf.setDownloadSuccess'))
-        } else {
-          this.simpleToast(this.$t('shelf.removeDownloadSuccess'))
-        }
+        // if (isDownload) {
+        //   this.simpleToast(this.$t('shelf.setDownloadSuccess'))
+        // } else {
+        //   this.simpleToast(this.$t('shelf.removeDownloadSuccess'))
+        // }
       },
       showDownload() {
         this.popupMenu = this.popup({
@@ -146,6 +164,33 @@
               text: this.isDownload ? this.$t('shelf.delete') : this.$t('shelf.open'),
               click: () => {
                 this.setDownload()
+              }
+            },
+            {
+              text: this.$t('shelf.cancel'),
+              click: () => {
+                this.hidePopup()
+              }
+            }
+          ]
+        }).show()
+      },
+      showRemove() {
+        let title
+        if (this.shelfSelected.length === 1) {
+          title = this.$t('shelf.removeBookTitle').replace('$1', `《${this.shelfSelected[0].title}》`)
+        } else {
+          title = this.$t('shelf.removeBookTitle').replace('$1', this.$t('shelf.selectBook'))
+        }
+
+        this.popupMenu = this.popup({
+          title: title,
+          btn: [
+            {
+              text: this.$t('shelf.removeBook'),
+              type: 'danger',
+              click: () => {
+                this.removeSelected()
               }
             },
             {
@@ -171,6 +216,7 @@
           case 3:
             break
           case 4:
+            this.showRemove()
             break
           default:
             break
@@ -229,6 +275,12 @@
           margin-top: px2rem(5);
           font-size: px2rem(12);
           color: #666;
+        }
+        .remove-text {
+          color: $color-pink;
+        }
+        .icon-shelf {
+          color: $color-pink;
         }
       }
     }

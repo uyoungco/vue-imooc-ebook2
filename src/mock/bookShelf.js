@@ -103,8 +103,8 @@ const testShelfList2 = [
 module.exports = {
   bookList: [
     {
-      fileName: '2016_Book_NewHorizonsForAData-DrivenEcon',
-      categoryText: 'ComputerScience',
+      fileName: '2018_Book_SolarParticleRadiationStormsFo',
+      categoryText: 'Physics',
       selected: false,
       id: 1,
       type: 1,
@@ -112,8 +112,8 @@ module.exports = {
       cover: 'http://47.99.166.157/book/res/img/ComputerScience/2013_Book_Office365.jpeg'
     },
     {
-      fileName: '2018_Book_Africa-EuropeResearchAndInnova',
-      categoryText: 'PoliticalScienceAndInternationalRelations',
+      fileName: '2018_Book_SolarParticleRadiationStormsFo',
+      categoryText: 'Physics',
       selected: false,
       id: 2,
       type: 1,
